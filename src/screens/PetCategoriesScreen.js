@@ -6,6 +6,7 @@ import {
   ScrollView,
   ImageBackground,
   TouchableOpacity,
+  NativeModules
 } from 'react-native';
 import {Icon} from 'react-native-elements';
 import {PetContext} from './context';
@@ -14,6 +15,9 @@ const {height, width} = Dimensions.get('window');
 
 function PetCategoriesScreen(props) {
   const data = ["Pets", "Livestock", "Beasts of burder"]
+  //const {StatusBarManager} = NativeModules
+  //const STATUSBAR_HEIGHT = StatusBarManager.HEIGHT;
+ // console.log(STATUSBAR_HEIGHT,'height')
   return (
     <View style={{flex: 1}}>
       <ImageBackground

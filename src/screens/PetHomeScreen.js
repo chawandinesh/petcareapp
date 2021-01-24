@@ -5,6 +5,8 @@ import {
   Dimensions,
   Image,
   ImageBackground,
+  StatusBar,
+  SafeAreaView,
   TouchableOpacity,
 } from 'react-native';
 import {Icon} from 'react-native-elements'
@@ -13,6 +15,7 @@ const {height, width} = Dimensions.get('window');
 function PetHomeScreen(props) {
   return (
     <View style={{flex: 1}}>
+      <StatusBar barStyle="light-content"/>
       <ImageBackground
         source={require('../assets/images/pet4.jpg')}
         resizeMode="cover"

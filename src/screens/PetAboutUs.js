@@ -5,11 +5,13 @@ import {
   ImageBackground,
   Dimensions,
   TouchableOpacity,
+  SafeAreaView,
 } from 'react-native';
 import {Icon} from 'react-native-elements';
 const {height, width} = Dimensions.get('window');
 function PetAboutUs(props) {
   return (
+    <SafeAreaView>
     <ImageBackground
       imageStyle={{backgroundColor: '#000', opacity: 0.6}}
       source={require('../assets/images/pet6.jpg')}
@@ -64,6 +66,7 @@ function PetAboutUs(props) {
 
         </View>
     </ImageBackground>
+    </SafeAreaView>
   );
 }
 export {PetAboutUs};
