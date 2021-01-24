@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, ImageBackground, Dimensions, Image} from 'react-native';
+import {View, Text, ImageBackground, Dimensions, Image, NativeModules} from 'react-native';
 import {Icon} from 'react-native-elements';
 import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
 import {PetContext} from './context';
@@ -12,6 +12,8 @@ function PetDetails(props) {
   const {category} = props.route.params;
   const data = state[category];
   const isFocused = useIsFocused();
+  const {StatusBarManager} = NativeModules
+  const STATUSBAR_HEIGHT = StatusBarManager.HEIGHT;
   
   const getInitialData = async () => {};
   React.useEffect(() => {
@@ -28,18 +30,18 @@ function PetDetails(props) {
     <ImageBackground
       style={{flex: 1}}
       source={require('../assets/images/pet2.jpg')}
-      blurRadius={1.5}
-      imageStyle={{opacity: 0.5, backgroundColor: '#000'}}>
+      blurRadius={4}
+      imageStyle={{opacity: 1, backgroundColor: '#000'}}>
       <View
-        style={{height: height * 0.2, backgroundColor: 'black', opacity: 0.8}}>
+        style={{height: height * 0.2,paddingTop:STATUSBAR_HEIGHT, backgroundColor: 'black', opacity: 0.8}}>
         <TouchableOpacity
-          style={{alignItems: 'flex-start', padding: 10}}
+          style={{alignItems: 'flex-start', margin: 5}}
           onPress={() => props.navigation.goBack()}>
           <Icon
             type="antdesign"
             name="arrowleft"
             color="#fff"
-            size={height * 0.05}
+            size={height * 0.04}
           />
         </TouchableOpacity>
         <View

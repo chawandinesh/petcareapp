@@ -5,6 +5,7 @@ import {
   ScrollView,
   Dimensions,
   TouchableOpacity,
+  NativeModules,
   ImageBackground,
 } from 'react-native';
 import {PetContext} from './context';
@@ -13,29 +14,30 @@ const {height, width} = Dimensions.get('window');
 
 function PetAllDetails(props) {
   const {state, setState} = React.useContext(PetContext);
-  console.log(state, setState);
   const allKeys = Object.keys(state);
   const data = allKeys
     .map((e) => (state[e].length ? state[e] : null))
     .filter((e) => e !== null);
-  console.log(data.flat(1), 'data..');
 
+  const {StatusBarManager} = NativeModules;
+  const STATUSBAR_HEIGHT = StatusBarManager.HEIGHT;
   return (
     <ImageBackground
       resizeMode="cover"
       style={{flex: 1}}
-      imageStyle={{backgroundColor:"#000", opacity: 0.5}}
+      blurRadius = {1}
+      imageStyle={{backgroundColor: '#000', opacity: 0.8}}
       source={require('../assets/images/pet3.jpg')}>
-            <View
-        style={{height: height * 0.2, backgroundColor: 'black', opacity: 0.8}}>
+      <View
+        style={{height: height * 0.2,paddingTop:STATUSBAR_HEIGHT, backgroundColor: 'black', opacity: 0.8}}>
         <TouchableOpacity
-          style={{alignItems: 'flex-start', padding: 10}}
+          style={{alignItems: 'flex-start', padding: 5}}
           onPress={() => props.navigation.goBack()}>
           <Icon
             type="antdesign"
             name="arrowleft"
             color="#fff"
-            size={height * 0.05}
+            size={height * 0.04}
           />
         </TouchableOpacity>
         <View
@@ -55,9 +57,7 @@ function PetAllDetails(props) {
               All Details
             </Text>
           </View>
-          <View>
-           
-          </View>
+          <View></View>
         </View>
       </View>
       <ScrollView style={{height: height * 0.9}}>
@@ -69,7 +69,7 @@ function PetAllDetails(props) {
                   <View
                     style={{
                       height: height * 0.15,
-                      width: width* 0.9,
+                      width: width * 0.9,
                       borderTopWidth: 5,
                       borderTopLeftRadius: 30,
                       borderLeftWidth: 2,

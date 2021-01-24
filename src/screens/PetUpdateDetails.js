@@ -1,19 +1,19 @@
 import React from 'react';
 import {
   View,
-  KeyboardAvoidingView,
   ImageBackground,
   TextInput,
   StyleSheet,
   Text,
-  ScrollView,
   TouchableOpacity,
   Platform,
   Image,
   TouchableWithoutFeedback,
   Dimensions,
+  NativeModules,
   Keyboard,
 } from 'react-native';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {Icon} from 'react-native-elements';
 import ImagePicker from 'react-native-image-crop-picker';
 import DateTimePicker from 'react-native-modal-datetime-picker';
@@ -25,6 +25,8 @@ const {height, width} = Dimensions.get('window');
 const PetUpdateDetails = (props) => {
   const {categoryProp, nameProp,index} = props.route.params;
   const {state, setState} = React.useContext(PetContext);
+  const {StatusBarManager} = NativeModules;
+  const STATUSBAR_HEIGHT = StatusBarManager.HEIGHT;
   const [petDetails, setPetDetails] = React.useState({
     name: '',
     careService: '',
@@ -36,17 +38,13 @@ const PetUpdateDetails = (props) => {
   const [isDateTimePickerVisible, setIsDateTimePickerVisible] = React.useState(
     false,
   );
-  React.useEffect(() => {
-    if(categoryProp && nameProp){
-        setPetDetails(state[categoryProp][index])
-    }
-  },[])
   const handleDatePicked = (date) => {
     setPetDetails({
       ...petDetails,
       careService: moment(date).format('DD-MM-YYYY'),
     });
     Keyboard.dismiss();
+    setIsDateTimePickerVisible(false)
   };
   const hideDateTimePicker = () => {
     setIsDateTimePickerVisible(false);
@@ -54,6 +52,11 @@ const PetUpdateDetails = (props) => {
   const showDateTimePicker = () => {
     setIsDateTimePickerVisible(true);
   };
+  React.useEffect(() => {
+    if(categoryProp && nameProp){
+        setPetDetails(state[categoryProp][index])
+    }
+  },[])
   const pickImage = () => {
     ImagePicker.openPicker({
       width: 300,
@@ -67,38 +70,39 @@ const PetUpdateDetails = (props) => {
         console.log(err);
       });
   };
-
   const handleSubmit = () => {
     [...state[categoryProp].splice(index,1,petDetails)]
     setState(state)
     props.navigation.goBack()
   };
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={styles.container}>
-      <ImageBackground
-        source={require('../assets/images/pet6.jpg')}
-        style={{backgroundColor: '#000', flex: 1, alignItems: 'center'}}>
+    <ImageBackground
+      blurRadius={1}
+      source={require('../assets/images/pet6.jpg')}
+      style={{backgroundColor: '#000', flex: 1, alignItems: 'center'}}>
+      <View
+        style={{
+          marginTop: 50,
+          alignItems: 'flex-start',
+          width: width,
+          padding: 10,
+          justifyContent: 'center',
+          height: height * 0.06,
+        }}>
+        <TouchableOpacity onPress={() => props.navigation.goBack()}>
+          <Icon
+            type="antdesign"
+            name="arrowleft"
+            color="#fff"
+            size={height * 0.04}
+          />
+        </TouchableOpacity>
+      </View>
+      <KeyboardAwareScrollView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={styles.container}>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <View style={{flex: 1, alignItems: 'center'}}>
-            <View
-              style={{
-                alignItems: 'flex-start',
-                width: width,
-                padding: 10,
-                justifyContent: 'center',
-                height: height * 0.06,
-              }}>
-              <TouchableOpacity onPress={() => props.navigation.goBack()}>
-                <Icon
-                  type="antdesign"
-                  name="arrowleft"
-                  color="#fff"
-                  size={height * 0.05}
-                />
-              </TouchableOpacity>
-            </View>
             <View
               style={{
                 justifyContent: 'center',
@@ -106,19 +110,19 @@ const PetUpdateDetails = (props) => {
                 backgroundColor: '#fff',
                 padding: 5,
                 borderRadius: 20,
-                marginBottom: 5,
+                marginBottom: 10,
                 alignItems: 'center',
               }}>
               <Text
                 style={{textAlign: 'center', fontSize: 24, fontWeight: 'bold'}}>
                 {' '}
-               Update Details
+                Update Details
               </Text>
             </View>
             <View
               style={{
-                width: width * 0.99,
-                backgroundColor: 'rgba(255,255,255,0.5)',
+                width: width * 0.98,
+                backgroundColor: 'rgba(0,0,0,0.5)',
                 borderTopRightRadius: 30,
                 borderTopLeftRadius: 30,
                 flex: 1,
@@ -132,7 +136,7 @@ const PetUpdateDetails = (props) => {
                   alignSelf: 'center',
                 }}>
                 <TouchableOpacity onPress={pickImage}>
-                  <Text style={{color: '#000', fontWeight: 'bold'}}>
+                  <Text style={{color: '#fff', fontWeight: 'bold'}}>
                     Tap For Image
                   </Text>
                   <View
@@ -142,9 +146,10 @@ const PetUpdateDetails = (props) => {
                       justifyContent: 'center',
                       alignItems: 'center',
                       alignSelf: 'center',
+                      borderColor:'#fff',
                       borderWidth: 1,
                     }}>
-                    {petDetails && petDetails.image ? (
+                    {petDetails.image.length ? (
                       <Image
                         resizeMode="stretch"
                         source={{uri: petDetails.image}}
@@ -155,17 +160,17 @@ const PetUpdateDetails = (props) => {
                         }}
                       />
                     ) : (
-                      <Icon name="adduser" type="antdesign" />
+                      <Icon name="adduser" color="#fff" type="antdesign" />
                     )}
                   </View>
                 </TouchableOpacity>
               </View>
-              <ScrollView style={styles.inner}>
+              <View style={styles.inner}>
                 <View
                   style={{
                     backgroundColor: '#5e521f',
                     padding: 5,
-                    marginBottom: 5,
+                    marginBottom: 10,
                     justifyContent: 'flex-end',
                     borderBottomEndRadius: 10,
                     borderBottomStartRadius: 10,
@@ -177,7 +182,7 @@ const PetUpdateDetails = (props) => {
                   <TextInput
                     placeholder="Enter name..."
                     style={styles.textInput}
-                    value={petDetails && petDetails.name}
+                    value={petDetails.name}
                     onChangeText={(text) =>
                       setPetDetails({...petDetails, name: text})
                     }
@@ -187,7 +192,7 @@ const PetUpdateDetails = (props) => {
                   style={{
                     backgroundColor: '#5e521f',
                     padding: 5,
-                    marginBottom: 5,
+                    marginBottom: 10,
                     justifyContent: 'flex-end',
                     borderBottomEndRadius: 10,
                     borderBottomStartRadius: 10,
@@ -199,19 +204,24 @@ const PetUpdateDetails = (props) => {
                   <View style={{flexDirection: 'row', alignItems: 'center'}}>
                     <TextInput
                       placeholder="care service..."
-                      value={petDetails && petDetails.careService}
+                      value={petDetails.careService}
                       editable={false}
                       style={[{...styles.textInput, width: '90%'}]}
                     />
                     <View style={{width: '10%'}}>
-                      <Icon name="date" color="#fff" type="fontisto" onPress={showDateTimePicker} />
+                      <Icon
+                        name="date"
+                        color="#fff"
+                        type="fontisto"
+                        onPress={showDateTimePicker}
+                      />
                     </View>
                   </View>
                 </View>
                 <View
                   style={{
                     backgroundColor: '#5e521f',
-                    marginBottom: 5,
+                    marginBottom: 10,
                     padding: 5,
                     justifyContent: 'flex-end',
                     borderBottomEndRadius: 10,
@@ -224,7 +234,7 @@ const PetUpdateDetails = (props) => {
                   <TextInput
                     placeholder="service requirements..."
                     style={styles.textInput}
-                    value={petDetails && petDetails.serviceRequirements}
+                    value={petDetails.serviceRequirements}
                     onChangeText={(text) =>
                       setPetDetails({...petDetails, serviceRequirements: text})
                     }
@@ -233,7 +243,7 @@ const PetUpdateDetails = (props) => {
                 <View
                   style={{
                     backgroundColor: '#5e521f',
-                    marginBottom: 5,
+                    marginBottom: 10,
                     padding: 5,
                     justifyContent: 'flex-end',
                     borderBottomEndRadius: 10,
@@ -246,7 +256,7 @@ const PetUpdateDetails = (props) => {
                   <TextInput
                     placeholder="Category of animal..."
                     style={styles.textInput}
-                    value={petDetails && petDetails.categoryOfAnimal}
+                    value={petDetails.categoryOfAnimal}
                     onChangeText={(text) =>
                       setPetDetails({...petDetails, categoryOfAnimal: text})
                     }
@@ -256,7 +266,7 @@ const PetUpdateDetails = (props) => {
                   style={{
                     backgroundColor: '#5e521f',
                     padding: 5,
-                    marginBottom: 5,
+                    marginBottom: 10,
                     justifyContent: 'flex-end',
                     borderBottomEndRadius: 10,
                     borderBottomStartRadius: 10,
@@ -269,22 +279,25 @@ const PetUpdateDetails = (props) => {
                     placeholder="Notes..."
                     multiline
                     numberOfLines={5}
-                    value={petDetails && petDetails.notes}
+                    value={petDetails.notes}
                     onChangeText={(text) =>
                       setPetDetails({...petDetails, notes: text})
                     }
                     style={{height: height * 0.13, backgroundColor: '#fff'}}
                   />
                 </View>
-              </ScrollView>
+              </View>
               <View
                 style={{
                   width: width * 0.5,
                   alignSelf: 'center',
                   borderRadius: 23,
                   padding: 10,
-                  backgroundColor: '#305e1f',
+                  borderBottomWidth:5,
+                  borderRightWidth:3,
+                  borderLeftWidth:3,
                   marginBottom: 10,
+                  backgroundColor: '#305e1f',
                 }}>
                 <TouchableOpacity onPress={handleSubmit}>
                   <Text
@@ -301,13 +314,13 @@ const PetUpdateDetails = (props) => {
             </View>
           </View>
         </TouchableWithoutFeedback>
-      </ImageBackground>
-      <DateTimePicker
-        isVisible={isDateTimePickerVisible}
-        onConfirm={handleDatePicked}
-        onCancel={hideDateTimePicker}
-      />
-    </KeyboardAvoidingView>
+        <DateTimePicker
+          isVisible={isDateTimePickerVisible}
+          onConfirm={handleDatePicked}
+          onCancel={hideDateTimePicker}
+        />
+      </KeyboardAwareScrollView>
+    </ImageBackground>
   );
 };
 
@@ -317,7 +330,7 @@ const styles = StyleSheet.create({
   },
   inner: {
     padding: 14,
-    flex: 1,
+   // flex: 1,
   },
   header: {
     fontSize: 36,
@@ -325,6 +338,7 @@ const styles = StyleSheet.create({
   },
   textInput: {
     borderRadius: 3,
+    height: height * 0.05,
     backgroundColor: '#fff',
   },
 });

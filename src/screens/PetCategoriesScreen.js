@@ -15,22 +15,22 @@ const {height, width} = Dimensions.get('window');
 
 function PetCategoriesScreen(props) {
   const data = ["Pets", "Livestock", "Beasts of burder"]
-  //const {StatusBarManager} = NativeModules
-  //const STATUSBAR_HEIGHT = StatusBarManager.HEIGHT;
- // console.log(STATUSBAR_HEIGHT,'height')
+  const {StatusBarManager} = NativeModules
+  const STATUSBAR_HEIGHT = StatusBarManager.HEIGHT;
+
   return (
     <View style={{flex: 1}}>
       <ImageBackground
         source={require('../assets/images/pet5.jpg')}
         resizeMode="cover"
         style={{flex: 3}}>
-        <View style={{flex: 1, alignItems: 'flex-start', margin: 10}}>
+        <View style={{flex: 1,paddingTop:STATUSBAR_HEIGHT, alignItems: 'flex-start', margin: 5}}>
           <TouchableOpacity onPress={() => props.navigation.goBack()}>
             <Icon
               type="antdesign"
               name="arrowleft"
               color="#fff"
-              size={height * 0.05}
+              size={height * 0.04}
             />
           </TouchableOpacity>
         </View>

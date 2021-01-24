@@ -1,19 +1,19 @@
 import React from 'react';
 import {
   View,
-  KeyboardAvoidingView,
   ImageBackground,
   TextInput,
   StyleSheet,
   Text,
-  ScrollView,
   TouchableOpacity,
   Platform,
   Image,
   TouchableWithoutFeedback,
   Dimensions,
+  NativeModules,
   Keyboard,
 } from 'react-native';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {Icon} from 'react-native-elements';
 import ImagePicker from 'react-native-image-crop-picker';
 import DateTimePicker from 'react-native-modal-datetime-picker';
@@ -25,6 +25,8 @@ const {height, width} = Dimensions.get('window');
 const PetAddDetails = (props) => {
   const {category} = props.route.params;
   const {state, setState} = React.useContext(PetContext);
+  const {StatusBarManager} = NativeModules;
+  const STATUSBAR_HEIGHT = StatusBarManager.HEIGHT;
   const [petDetails, setPetDetails] = React.useState({
     name: '',
     careService: '',
@@ -42,6 +44,7 @@ const PetAddDetails = (props) => {
       careService: moment(date).format('DD-MM-YYYY'),
     });
     Keyboard.dismiss();
+    setIsDateTimePickerVisible(false)
   };
   const hideDateTimePicker = () => {
     setIsDateTimePickerVisible(false);
@@ -63,47 +66,49 @@ const PetAddDetails = (props) => {
       });
   };
   const handleSubmit = () => {
-    setState({...state, [category]: [...state[category], petDetails]})
-    props.navigation.goBack()
+    setState({...state, [category]: [...state[category], petDetails]});
+    props.navigation.goBack();
   };
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={styles.container}>
-      <ImageBackground
-        source={require('../assets/images/pet6.jpg')}
-        style={{backgroundColor: '#000', flex: 1, alignItems: 'center'}}>
+    <ImageBackground
+      blurRadius={1}
+      source={require('../assets/images/pet6.jpg')}
+      style={{backgroundColor: '#000', flex: 1, alignItems: 'center'}}>
+      <View
+        style={{
+          marginTop: STATUSBAR_HEIGHT - 10,
+          alignItems: 'flex-start',
+          width: width,
+          padding: 10,
+          justifyContent: 'center',
+          //height: height * 0.06,
+        }}>
+        <TouchableOpacity onPress={() => props.navigation.goBack()}>
+          <Icon
+            type="antdesign"
+            name="arrowleft"
+            color="#fff"
+            size={height * 0.04}
+          />
+        </TouchableOpacity>
+      </View>
+      <KeyboardAwareScrollView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={styles.container}>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <View style={{flex: 1, alignItems: 'center'}}>
             <View
               style={{
-                alignItems: 'flex-start',
-                width: width,
-                padding: 10,
                 justifyContent: 'center',
-                height: height * 0.06,
-              }}>
-              <TouchableOpacity onPress={() => props.navigation.goBack()}>
-                <Icon
-                  type="antdesign"
-                  name="arrowleft"
-                  color="#fff"
-                  size={height * 0.05}
-                />
-              </TouchableOpacity>
-            </View>
-            <View
-              style={{
-                justifyContent: 'center',
-                height: height * 0.05,
+                height: height * 0.04,
                 backgroundColor: '#fff',
-                padding: 5,
+                padding: 2,
                 borderRadius: 20,
-                marginBottom: 5,
+                marginBottom: 10,
                 alignItems: 'center',
               }}>
               <Text
-                style={{textAlign: 'center', fontSize: 24, fontWeight: 'bold'}}>
+                style={{textAlign: 'center', fontSize: height * 0.03, fontWeight: 'bold'}}>
                 {' '}
                 Add Details
               </Text>
@@ -111,7 +116,7 @@ const PetAddDetails = (props) => {
             <View
               style={{
                 width: width * 0.98,
-                backgroundColor: 'rgba(255,255,255,0.5)',
+                backgroundColor: 'rgba(0,0,0,0.5)',
                 borderTopRightRadius: 30,
                 borderTopLeftRadius: 30,
                 flex: 1,
@@ -119,13 +124,13 @@ const PetAddDetails = (props) => {
               }}>
               <View
                 style={{
-                  height: height * 0.12,
+                  height: height * 0.1,
                   width: width * 0.8,
                   alignItems: 'center',
                   alignSelf: 'center',
                 }}>
                 <TouchableOpacity onPress={pickImage}>
-                  <Text style={{color: '#000', fontWeight: 'bold'}}>
+                  <Text style={{color: '#fff', fontWeight: 'bold'}}>
                     Tap For Image
                   </Text>
                   <View
@@ -135,6 +140,7 @@ const PetAddDetails = (props) => {
                       justifyContent: 'center',
                       alignItems: 'center',
                       alignSelf: 'center',
+                      borderColor:'#fff',
                       borderWidth: 1,
                     }}>
                     {petDetails.image.length ? (
@@ -148,17 +154,17 @@ const PetAddDetails = (props) => {
                         }}
                       />
                     ) : (
-                      <Icon name="adduser" type="antdesign" />
+                      <Icon name="adduser" size={height * 0.03} color="#fff" type="antdesign" />
                     )}
                   </View>
                 </TouchableOpacity>
               </View>
-              <ScrollView style={styles.inner}>
+              <View style={styles.inner}>
                 <View
                   style={{
                     backgroundColor: '#5e521f',
                     padding: 5,
-                    marginBottom: 5,
+                    marginBottom: 10,
                     justifyContent: 'flex-end',
                     borderBottomEndRadius: 10,
                     borderBottomStartRadius: 10,
@@ -180,7 +186,7 @@ const PetAddDetails = (props) => {
                   style={{
                     backgroundColor: '#5e521f',
                     padding: 5,
-                    marginBottom: 5,
+                    marginBottom: 10,
                     justifyContent: 'flex-end',
                     borderBottomEndRadius: 10,
                     borderBottomStartRadius: 10,
@@ -197,14 +203,19 @@ const PetAddDetails = (props) => {
                       style={[{...styles.textInput, width: '90%'}]}
                     />
                     <View style={{width: '10%'}}>
-                      <Icon name="date" color="#fff" type="fontisto" onPress={showDateTimePicker} />
+                      <Icon
+                        name="date"
+                        color="#fff"
+                        type="fontisto"
+                        onPress={showDateTimePicker}
+                      />
                     </View>
                   </View>
                 </View>
                 <View
                   style={{
                     backgroundColor: '#5e521f',
-                    marginBottom: 5,
+                    marginBottom: 10,
                     padding: 5,
                     justifyContent: 'flex-end',
                     borderBottomEndRadius: 10,
@@ -226,7 +237,7 @@ const PetAddDetails = (props) => {
                 <View
                   style={{
                     backgroundColor: '#5e521f',
-                    marginBottom: 5,
+                    marginBottom: 10,
                     padding: 5,
                     justifyContent: 'flex-end',
                     borderBottomEndRadius: 10,
@@ -249,7 +260,7 @@ const PetAddDetails = (props) => {
                   style={{
                     backgroundColor: '#5e521f',
                     padding: 5,
-                    marginBottom: 5,
+                    marginBottom: 10,
                     justifyContent: 'flex-end',
                     borderBottomEndRadius: 10,
                     borderBottomStartRadius: 10,
@@ -269,14 +280,19 @@ const PetAddDetails = (props) => {
                     style={{height: height * 0.13, backgroundColor: '#fff'}}
                   />
                 </View>
-              </ScrollView>
+              </View>
               <View
                 style={{
                   width: width * 0.5,
+                  height: height * 0.05,
                   alignSelf: 'center',
                   borderRadius: 23,
-                  padding: 10,
-                  marginBottom: 10,
+                  //padding: 10,
+                  justifyContent:'center',
+                 // marginBottom: 10,
+                  borderBottomWidth:5,
+                  borderRightWidth:3,
+                  borderLeftWidth:3,
                   backgroundColor: '#305e1f',
                 }}>
                 <TouchableOpacity onPress={handleSubmit}>
@@ -284,7 +300,7 @@ const PetAddDetails = (props) => {
                     style={{
                       color: '#fff',
                       fontWeight: 'bold',
-                      fontSize: 20,
+                      fontSize: height * 0.02,
                       textAlign: 'center',
                     }}>
                     Submit
@@ -294,13 +310,13 @@ const PetAddDetails = (props) => {
             </View>
           </View>
         </TouchableWithoutFeedback>
-      </ImageBackground>
-      <DateTimePicker
-        isVisible={isDateTimePickerVisible}
-        onConfirm={handleDatePicked}
-        onCancel={hideDateTimePicker}
-      />
-    </KeyboardAvoidingView>
+        <DateTimePicker
+          isVisible={isDateTimePickerVisible}
+          onConfirm={handleDatePicked}
+          onCancel={hideDateTimePicker}
+        />
+      </KeyboardAwareScrollView>
+    </ImageBackground>
   );
 };
 
@@ -310,7 +326,7 @@ const styles = StyleSheet.create({
   },
   inner: {
     padding: 14,
-    flex: 1,
+   // flex: 1,
   },
   header: {
     fontSize: 36,
@@ -318,6 +334,7 @@ const styles = StyleSheet.create({
   },
   textInput: {
     borderRadius: 3,
+    height: height * 0.04,
     backgroundColor: '#fff',
   },
 });

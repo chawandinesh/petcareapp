@@ -4,21 +4,24 @@ import {
   Text,
   ImageBackground,
   Dimensions,
+  NativeModules,
   TouchableOpacity,
   SafeAreaView,
 } from 'react-native';
 import {Icon} from 'react-native-elements';
 const {height, width} = Dimensions.get('window');
+const {StatusBarManager} = NativeModules
+const STATUSBAR_HEIGHT = StatusBarManager.HEIGHT;
 function PetAboutUs(props) {
   return (
-    <SafeAreaView>
     <ImageBackground
       imageStyle={{backgroundColor: '#000', opacity: 0.6}}
-      source={require('../assets/images/pet6.jpg')}
+      source={require('../assets/images/pet2.jpg')}
       style={{flex: 1}}>
       <View
         style={{
-          height: height * 0.1,
+          height: "auto",
+          paddingTop: STATUSBAR_HEIGHT,
           backgroundColor: 'black',
           opacity: 0.8,
           alignItems: 'center',
@@ -31,7 +34,7 @@ function PetAboutUs(props) {
             type="antdesign"
             name="arrowleft"
             color="#fff"
-            size={height * 0.05}
+            size={height * 0.04}
           />
         </TouchableOpacity>
         <View>
@@ -66,7 +69,6 @@ function PetAboutUs(props) {
 
         </View>
     </ImageBackground>
-    </SafeAreaView>
   );
 }
 export {PetAboutUs};
