@@ -80,6 +80,7 @@ function PetHomeScreen(props) {
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
+            onPress ={() => props.navigation.navigate('PetAllDetails')}
             style={{
               backgroundColor: '#96753c',
               borderBottomWidth: 5,

@@ -1,11 +1,9 @@
 import React from 'react'
 
 const initialData = {
-    Pets:[],
-    Livestock:[],
-    Tommy: [],
-    Beasts:[],
-    Jhonny:[]
+    "Pets":[],
+    "Livestock":[],
+    "Beasts of burder": []
 }
 
 export const PetContext = React.createContext(null)

@@ -276,6 +276,7 @@ const PetAddDetails = (props) => {
                   alignSelf: 'center',
                   borderRadius: 23,
                   padding: 10,
+                  marginBottom: 10,
                   backgroundColor: '#305e1f',
                 }}>
                 <TouchableOpacity onPress={handleSubmit}>

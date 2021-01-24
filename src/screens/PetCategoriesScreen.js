@@ -13,7 +13,7 @@ import LinearGradient from 'react-native-linear-gradient';
 const {height, width} = Dimensions.get('window');
 
 function PetCategoriesScreen(props) {
-  const data = ["Pets", "Livestock", "Beasts","Jhonny"]
+  const data = ["Pets", "Livestock", "Beasts of burder"]
   return (
     <View style={{flex: 1}}>
       <ImageBackground
@@ -101,6 +101,7 @@ function PetCategoriesScreen(props) {
                         style={{
                           fontWeight: 'bold',
                           fontSize: 26,
+                          textAlign:'center',
                           color: '#286',
                         }}>
                         {e}

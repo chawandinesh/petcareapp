@@ -284,6 +284,7 @@ const PetUpdateDetails = (props) => {
                   borderRadius: 23,
                   padding: 10,
                   backgroundColor: '#305e1f',
+                  marginBottom: 10,
                 }}>
                 <TouchableOpacity onPress={handleSubmit}>
                   <Text
