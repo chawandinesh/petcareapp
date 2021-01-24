@@ -44,7 +44,7 @@ const PetAddDetails = (props) => {
       careService: moment(date).format('DD-MM-YYYY'),
     });
     Keyboard.dismiss();
-    setIsDateTimePickerVisible(false)
+    setIsDateTimePickerVisible(false);
   };
   const hideDateTimePicker = () => {
     setIsDateTimePickerVisible(false);
@@ -108,7 +108,11 @@ const PetAddDetails = (props) => {
                 alignItems: 'center',
               }}>
               <Text
-                style={{textAlign: 'center', fontSize: height * 0.03, fontWeight: 'bold'}}>
+                style={{
+                  textAlign: 'center',
+                  fontSize: height * 0.03,
+                  fontWeight: 'bold',
+                }}>
                 {' '}
                 Add Details
               </Text>
@@ -140,7 +144,7 @@ const PetAddDetails = (props) => {
                       justifyContent: 'center',
                       alignItems: 'center',
                       alignSelf: 'center',
-                      borderColor:'#fff',
+                      borderColor: '#fff',
                       borderWidth: 1,
                     }}>
                     {petDetails.image.length ? (
@@ -154,7 +158,12 @@ const PetAddDetails = (props) => {
                         }}
                       />
                     ) : (
-                      <Icon name="adduser" size={height * 0.03} color="#fff" type="antdesign" />
+                      <Icon
+                        name="adduser"
+                        size={height * 0.03}
+                        color="#fff"
+                        type="antdesign"
+                      />
                     )}
                   </View>
                 </TouchableOpacity>
@@ -195,22 +204,16 @@ const PetAddDetails = (props) => {
                     style={{fontSize: 17, fontWeight: 'bold', color: '#fff'}}>
                     Care Service
                   </Text>
-                  <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                    <TextInput
-                      placeholder="care service..."
-                      value={petDetails.careService}
-                      editable={false}
-                      style={[{...styles.textInput, width: '90%'}]}
-                    />
-                    <View style={{width: '10%'}}>
-                      <Icon
-                        name="date"
-                        color="#fff"
-                        type="fontisto"
-                        onPress={showDateTimePicker}
-                      />
-                    </View>
-                  </View>
+
+                  <TextInput
+                    placeholder="care service..."
+                    value={petDetails.careService}
+                    style={styles.textInput}
+                    //style={[{...styles.textInput}]}
+                    onChangeText={(text) =>
+                      setPetDetails({...petDetails, careService: text})
+                    }
+                  />
                 </View>
                 <View
                   style={{
@@ -288,11 +291,11 @@ const PetAddDetails = (props) => {
                   alignSelf: 'center',
                   borderRadius: 23,
                   //padding: 10,
-                  justifyContent:'center',
-                 // marginBottom: 10,
-                  borderBottomWidth:5,
-                  borderRightWidth:3,
-                  borderLeftWidth:3,
+                  justifyContent: 'center',
+                  // marginBottom: 10,
+                  borderBottomWidth: 5,
+                  borderRightWidth: 3,
+                  borderLeftWidth: 3,
                   backgroundColor: '#305e1f',
                 }}>
                 <TouchableOpacity onPress={handleSubmit}>
@@ -326,7 +329,7 @@ const styles = StyleSheet.create({
   },
   inner: {
     padding: 14,
-   // flex: 1,
+    // flex: 1,
   },
   header: {
     fontSize: 36,

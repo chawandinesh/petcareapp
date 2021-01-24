@@ -201,22 +201,16 @@ const PetUpdateDetails = (props) => {
                     style={{fontSize: 17, fontWeight: 'bold', color: '#fff'}}>
                     Care Service
                   </Text>
-                  <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                    <TextInput
-                      placeholder="care service..."
-                      value={petDetails.careService}
-                      editable={false}
-                      style={[{...styles.textInput, width: '90%'}]}
-                    />
-                    <View style={{width: '10%'}}>
-                      <Icon
-                        name="date"
-                        color="#fff"
-                        type="fontisto"
-                        onPress={showDateTimePicker}
-                      />
-                    </View>
-                  </View>
+
+                  <TextInput
+                    placeholder="care service..."
+                    value={petDetails.careService}
+                    style={styles.textInput}
+                    //style={[{...styles.textInput}]}
+                    onChangeText={(text) =>
+                      setPetDetails({...petDetails, careService: text})
+                    }
+                  />
                 </View>
                 <View
                   style={{
