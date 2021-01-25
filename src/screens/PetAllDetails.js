@@ -4,6 +4,7 @@ import {
   Text,
   ScrollView,
   Dimensions,
+  Image,
   TouchableOpacity,
   NativeModules,
   ImageBackground,
@@ -64,7 +65,7 @@ function PetAllDetails(props) {
         {data.flat(1).length ? (
           data.flat(1).map((e, index) => {
             return (
-              <TouchableOpacity key={index}>
+              <TouchableOpacity key={index} onPress={() => props.navigation.navigate('PetViewDetails', {data:e})}>
                 <View style={{width: width, flexDirection: 'row'}}>
                   <View
                     style={{
@@ -178,7 +179,7 @@ function PetAllDetails(props) {
                   textAlign: 'center',
                   padding: 19,
                 }}>
-                No data Found, Click on ' + ' to add Pet Details
+                No data Found, go to Pet Details section to add pet details
               </Text>
             </View>
           </View>

@@ -10,6 +10,7 @@ import {
   PetAboutUs,
   PetUpdateDetails,
   PetAllDetails,
+  PetViewDetails
 } from '../screens';
 
 const Stack = createStackNavigator();
@@ -27,6 +28,7 @@ export default function stackNavigator() {
         <Stack.Screen component={PetAboutUs} name="PetAboutUs" />
         <Stack.Screen component={PetUpdateDetails} name="PetUpdateDetails"/>
         <Stack.Screen component={PetAllDetails} name="PetAllDetails" />
+        <Stack.Screen component={PetViewDetails} name="PetViewDetails" />
       </Stack.Navigator>
     </NavigationContainer>
   );

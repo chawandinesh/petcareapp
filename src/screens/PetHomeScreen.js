@@ -19,10 +19,10 @@ function PetHomeScreen(props) {
       <ImageBackground
         source={require('../assets/images/pet4.jpg')}
         resizeMode="cover"
-        style={{flex: 1}}></ImageBackground>
+        style={{flex: 3}}></ImageBackground>
       <View
         style={{
-          flex: 1,
+          flex: 2,
           backgroundColor: '#ffffee',
           marginTop: -200,
           borderTopRightRadius: 200,
@@ -105,32 +105,7 @@ function PetHomeScreen(props) {
             </Text>
           </TouchableOpacity>
         </View>
-        <View style={{flex: 2, marginTop: -30, justifyContent: 'center'}}>
-          <TouchableOpacity
-            style={{
-              alignSelf: 'center',
-              padding: 10,
-              width: width * 0.5,
-              borderRadius: 12,
-              shadowColor: 'rgba(0,0,0, .4)', // IOS
-              shadowOffset: {height: 1, width: 1}, // IOS
-              shadowOpacity: 1, // IOS
-              shadowRadius: 1, //IOS
-              backgroundColor: '#432d8a',
-              elevation: 2, // Android
-            }}>
-            <Text
-              style={{
-                textAlign: 'center',
-                fontStyle: 'italic',
-                fontWeight: 'bold',
-                fontSize: 30,
-                color: '#fff',
-              }}>
-              Rate Us
-            </Text>
-          </TouchableOpacity>
-        </View>
+       
         <View
           style={{
             flex: 1,
