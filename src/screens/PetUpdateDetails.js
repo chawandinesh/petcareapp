@@ -44,7 +44,7 @@ const PetUpdateDetails = (props) => {
       careService: moment(date).format('DD-MM-YYYY'),
     });
     Keyboard.dismiss();
-    setIsDateTimePickerVisible(false)
+    setIsDateTimePickerVisible(false);
   };
   const hideDateTimePicker = () => {
     setIsDateTimePickerVisible(false);
@@ -82,12 +82,12 @@ const PetUpdateDetails = (props) => {
       style={{backgroundColor: '#000', flex: 1, alignItems: 'center'}}>
       <View
         style={{
-          marginTop: 50,
+          marginTop: STATUSBAR_HEIGHT - 10,
           alignItems: 'flex-start',
           width: width,
           padding: 10,
           justifyContent: 'center',
-          height: height * 0.06,
+          //height: height * 0.06,
         }}>
         <TouchableOpacity onPress={() => props.navigation.goBack()}>
           <Icon
@@ -106,15 +106,19 @@ const PetUpdateDetails = (props) => {
             <View
               style={{
                 justifyContent: 'center',
-                height: height * 0.05,
+                height: height * 0.04,
                 backgroundColor: '#fff',
-                padding: 5,
+                padding: 2,
                 borderRadius: 20,
                 marginBottom: 10,
                 alignItems: 'center',
               }}>
               <Text
-                style={{textAlign: 'center', fontSize: 24, fontWeight: 'bold'}}>
+                style={{
+                  textAlign: 'center',
+                  fontSize: height * 0.03,
+                  fontWeight: 'bold',
+                }}>
                 {' '}
                 Update Details
               </Text>
@@ -130,7 +134,7 @@ const PetUpdateDetails = (props) => {
               }}>
               <View
                 style={{
-                  height: height * 0.12,
+                  height: height * 0.1,
                   width: width * 0.8,
                   alignItems: 'center',
                   alignSelf: 'center',
@@ -146,7 +150,7 @@ const PetUpdateDetails = (props) => {
                       justifyContent: 'center',
                       alignItems: 'center',
                       alignSelf: 'center',
-                      borderColor:'#fff',
+                      borderColor: '#fff',
                       borderWidth: 1,
                     }}>
                     {petDetails.image.length ? (
@@ -160,7 +164,12 @@ const PetUpdateDetails = (props) => {
                         }}
                       />
                     ) : (
-                      <Icon name="adduser" color="#fff" type="antdesign" />
+                      <Icon
+                        name="adduser"
+                        size={height * 0.03}
+                        color="#fff"
+                        type="antdesign"
+                      />
                     )}
                   </View>
                 </TouchableOpacity>
@@ -284,13 +293,15 @@ const PetUpdateDetails = (props) => {
               <View
                 style={{
                   width: width * 0.5,
+                  height: height * 0.05,
                   alignSelf: 'center',
                   borderRadius: 23,
-                  padding: 10,
-                  borderBottomWidth:5,
-                  borderRightWidth:3,
-                  borderLeftWidth:3,
-                  marginBottom: 10,
+                  //padding: 10,
+                  justifyContent: 'center',
+                  // marginBottom: 10,
+                  borderBottomWidth: 5,
+                  borderRightWidth: 3,
+                  borderLeftWidth: 3,
                   backgroundColor: '#305e1f',
                 }}>
                 <TouchableOpacity onPress={handleSubmit}>
@@ -298,7 +309,7 @@ const PetUpdateDetails = (props) => {
                     style={{
                       color: '#fff',
                       fontWeight: 'bold',
-                      fontSize: 20,
+                      fontSize: height * 0.02,
                       textAlign: 'center',
                     }}>
                     Update
@@ -324,7 +335,7 @@ const styles = StyleSheet.create({
   },
   inner: {
     padding: 14,
-   // flex: 1,
+    // flex: 1,
   },
   header: {
     fontSize: 36,
@@ -332,7 +343,7 @@ const styles = StyleSheet.create({
   },
   textInput: {
     borderRadius: 3,
-    height: height * 0.05,
+    height: height * 0.04,
     backgroundColor: '#fff',
   },
 });
